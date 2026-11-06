@@ -1,0 +1,9 @@
+{
+  "name": "mario-platformer",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Browser platformer (HTML5 Canvas)",
+  "scripts": {
+    "start": "node serve.js"
+  }
+}

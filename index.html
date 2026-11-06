@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Super Plumber edición Cursor</title>
+  <link rel="stylesheet" href="/css/style.css?v=8" />
+  <script type="importmap">
+  {
+    "imports": {
+      "/js-v3/constants.js": "/js-v3/constants.js",
+      "/js-v3/input.js": "/js-v3/input.js",
+      "/js-v3/game.js": "/js-v3/game.js",
+      "/js-v3/level.js": "/js-v3/level.js",
+      "/js-v3/entities.js": "/js-v3/entities.js",
+      "/js-v3/physics.js": "/js-v3/physics.js",
+      "/js-v3/render.js": "/js-v3/render.js",
+      "/js-v3/storage.js": "/js-v3/storage.js"
+    }
+  }
+  </script>
+</head>
+<body>
+  <div id="game-wrap">
+    <canvas id="game" width="960" height="540" tabindex="0"></canvas>
+    <div id="hud" class="hidden">
+      <span id="player-name"></span>
+      <span id="lives">Vidas: 3</span>
+      <span id="coins">Monedas: 0/0</span>
+      <span id="score">Puntos: 0</span>
+    </div>
+    <button type="button" id="exit-to-menu" class="hidden">Menú</button>
+    <p id="notice" class="hidden"></p>
+    <p id="controls-hint" class="hidden">Mover: A/D o ←/→ · Saltar: Espacio / W / ↑ (doble salto en el aire) · Reiniciar: R</p>
+    <div id="menu">
+      <h1 id="menu-title">SUPER PLUMBER</h1>
+      <p id="menu-edition">edición Cursor</p>
+      <label id="name-label" for="player-name-input">Tu nombre</label>
+      <input
+        id="player-name-input"
+        type="text"
+        maxlength="16"
+        placeholder="Escribe tu nombre"
+        autocomplete="off"
+        spellcheck="false"
+      />
+      <div id="level-cards">
+        <button type="button" class="level-card" data-level="1" id="level-1-card">
+          <span class="level-num">Nivel 1</span>
+          <span class="level-title">Montaña</span>
+        </button>
+        <button type="button" class="level-card locked" data-level="2" id="level-2-card">
+          <span class="lock-icon" aria-hidden="true"></span>
+          <span class="level-num">Nivel 2</span>
+          <span class="level-title locked-title">???</span>
+          <span class="level-title unlocked-title">Casa embrujada</span>
+        </button>
+        <button type="button" class="level-card locked" data-level="3" id="level-3-card">
+          <span class="lock-icon" aria-hidden="true"></span>
+          <span class="level-num">Nivel 3</span>
+          <span class="level-title locked-title">???</span>
+          <span class="level-title unlocked-title">Desierto</span>
+        </button>
+        <button type="button" class="level-card locked" data-level="4" id="level-4-card">
+          <span class="lock-icon" aria-hidden="true"></span>
+          <span class="level-num">Nivel 4</span>
+          <span class="level-title locked-title">???</span>
+          <span class="level-title unlocked-title">Ciudad</span>
+        </button>
+      </div>
+    </div>
+    <div id="overlay" class="hidden">
+      <p id="overlay-title"></p>
+      <p id="overlay-sub">Pulsa R para reiniciar</p>
+      <button type="button" id="back-to-menu">Volver al menú</button>
+    </div>
+  </div>
+  <script type="module" src="/js-v3/main.js?v=18"></script>
+</body>
+</html>
