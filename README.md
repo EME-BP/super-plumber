@@ -13,8 +13,7 @@ No hace falta Python ni `npm install`: el servidor usa solo Node estándar.
 En PowerShell:
 
 ```powershell
-cd "C:\Users\Blue People\Documents\Cursor\CursorTrainning\mario-platformer"
-npm start
+
 ```
 
 Alternativas:
