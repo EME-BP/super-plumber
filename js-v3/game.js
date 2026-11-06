@@ -38,8 +38,12 @@ export const STATE = {
   GAME_OVER: "game_over",
 };
 
-const COIN_NOTICE =
-  "¡Atención! Aún te faltan monedas. Recógelas todas y vuelve a la meta.";
+export function missingCoinsNotice(remaining) {
+  if (remaining === 1) {
+    return "¡Atención! Te falta 1 moneda. Recógela y vuelve a la meta.";
+  }
+  return `¡Atención! Te faltan ${remaining} monedas. Recógelas y vuelve a la meta.`;
+}
 
 export function coinsCollected(game) {
   return (game.coins || []).filter((c) => c.collected).length;
@@ -76,7 +80,6 @@ export function createGame() {
     jumpWasDown: false,
     time: 0,
     notice: "",
-    flagNoticeShown: false,
   };
 }
 
@@ -104,7 +107,6 @@ export function startLevel(game, levelId, username) {
   game.jumpWasDown = false;
   game.time = 0;
   game.notice = "";
-  game.flagNoticeShown = false;
 }
 
 export function resetGame(game) {
@@ -122,7 +124,6 @@ export function returnToMenu(game) {
   game.coins = [];
   game.jumpWasDown = false;
   game.notice = "";
-  game.flagNoticeShown = false;
 }
 
 function respawnPlayer(game) {
@@ -188,15 +189,12 @@ function handleFlag(game) {
   const remaining = coinsTotal(game) - coinsCollected(game);
 
   if (!overlapping) {
-    game.flagNoticeShown = false;
+    game.notice = "";
     return;
   }
 
   if (remaining > 0) {
-    if (!game.flagNoticeShown) {
-      game.flagNoticeShown = true;
-      game.notice = COIN_NOTICE;
-    }
+    game.notice = missingCoinsNotice(remaining);
     return;
   }
 
