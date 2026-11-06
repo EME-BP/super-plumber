@@ -8,7 +8,9 @@ export const RUN_FRICTION = 1450;
 export const FACING_VX_THRESHOLD = 37;
 export const LEG_ANIM_VX = 59;
 export const LEG_ANIM_VX_OFF = 43;
-export const JUMP_VELOCITY = -1320;
+export const JUMP_VELOCITY = -880;
+export const AIR_JUMP_VELOCITY = -620;
+export const MAX_AIR_JUMPS = 1;
 export const COYOTE_MS = 100;
 
 export const VIEW_W = 960;

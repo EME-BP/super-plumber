@@ -5,6 +5,8 @@ import {
   RUN_ACCEL,
   RUN_FRICTION,
   JUMP_VELOCITY,
+  AIR_JUMP_VELOCITY,
+  MAX_AIR_JUMPS,
   COYOTE_MS,
   FACING_VX_THRESHOLD,
   LEG_ANIM_VX,
@@ -22,6 +24,7 @@ export function createPlayer(spawn) {
     vy: 0,
     grounded: false,
     coyoteTimer: 0,
+    airJumpsLeft: MAX_AIR_JUMPS,
     facing: 1,
     jumpHeld: false,
     runAnim: false,
@@ -59,10 +62,15 @@ export function updatePlayer(player, input, dt, platforms, jumpEdge) {
   if (player.vx > FACING_VX_THRESHOLD) player.facing = 1;
   else if (player.vx < -FACING_VX_THRESHOLD) player.facing = -1;
 
-  if (jumpEdge && (player.grounded || player.coyoteTimer > 0)) {
-    player.vy = JUMP_VELOCITY;
-    player.grounded = false;
-    player.coyoteTimer = 0;
+  if (jumpEdge) {
+    if (player.grounded || player.coyoteTimer > 0) {
+      player.vy = JUMP_VELOCITY;
+      player.grounded = false;
+      player.coyoteTimer = 0;
+    } else if (player.airJumpsLeft > 0) {
+      player.vy = AIR_JUMP_VELOCITY;
+      player.airJumpsLeft -= 1;
+    }
   }
 
   player.vy += GRAVITY * dt;
@@ -73,6 +81,7 @@ export function updatePlayer(player, input, dt, platforms, jumpEdge) {
 
   if (grounded) {
     player.coyoteTimer = COYOTE_MS / 1000;
+    player.airJumpsLeft = MAX_AIR_JUMPS;
   } else {
     player.coyoteTimer = Math.max(0, player.coyoteTimer - dt);
   }
