@@ -1,33 +1,18 @@
 ---
-description: Solo Elías (eliasau5) puede cambiar mecánicas; cualquiera puede editar las reglas
+description: Cualquiera puede editar mecánicas y reglas del proyecto
 alwaysApply: true
 ---
 
-# Solo el dueño puede cambiar mecánicas
+# Cualquiera puede editar mecánicas y reglas
 
-Únicamente **Elías** (dueño, GitHub `eliasau5`) puede modificar archivos de mecánicas del juego, en especial el **doble salto**.
+Cualquier persona puede modificar las mecánicas del juego y las reglas del proyecto. No hace falta ser Elías (`eliasau5`).
 
-Cualquiera puede editar las reglas del proyecto, incluida `proteger-mecanicas.mdc` y esta regla.
-
-Archivos de mecánicas cubiertos (entre otros de física/salto/meta/R):
+Archivos de mecánicas:
 
 - `js-v3/entities.js`, `js-v3/constants.js`, `js-v3/game.js`, `js-v3/input.js`, `js-v3/physics.js`
 
-Si quien pide el cambio de mecánicas **no** es Elías / `eliasau5`:
+Reglas:
 
-1. Muestra un error claro.
-2. **No edites** esos archivos. Ni parches, ni “solo un ajuste”.
-3. No toques `MAX_AIR_JUMPS`, `airJumpsLeft`, `JUMP_VELOCITY` ni `AIR_JUMP_VELOCITY`.
+- `.cursor/rules/proteger-mecanicas.mdc` y esta regla
 
-```javascript
-// ✅ GOOD — Elías pide un ajuste; se conserva el doble salto
-if (jumpEdge) {
-  if (player.grounded || player.coyoteTimer > 0) player.vy = JUMP_VELOCITY;
-  else if (player.airJumpsLeft > 0) { player.vy = AIR_JUMP_VELOCITY; player.airJumpsLeft -= 1; }
-}
-
-// ✅ GOOD — cualquiera puede editar .cursor/rules/, aunque no sea Elías
-
-// ❌ BAD — otro usuario (o sesión sin dueño) pide quitar el doble salto y el agente lo aplica
-if (jumpEdge && player.grounded) player.vy = JUMP_VELOCITY;
-```
+Al editar, conserva el doble salto, la meta y el reinicio con R descritos en `proteger-mecanicas.mdc`.
