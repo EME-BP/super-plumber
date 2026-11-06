@@ -1,0 +1,38 @@
+---
+description: Conservar doble salto, meta y reinicio con R
+alwaysApply: true
+---
+
+# Proteger mecánicas del juego
+
+Al cambiar menú, niveles, física o input, no quites ni rompas estas mecánicas.
+
+## Doble salto
+
+- Un salto en el suelo (o coyote) y un salto extra en el aire.
+- Conserva `MAX_AIR_JUMPS` y `airJumpsLeft` en `mario-platformer/js-v3/entities.js`; recarga al aterrizar.
+- No dejes el salto solo en suelo.
+
+## Meta
+
+- Cada nivel debe tener `flag` (bandera, puerta o farol) alcanzable.
+- Conserva `handleFlag` en `mario-platformer/js-v3/game.js` y la exigencia de todas las monedas para ganar.
+- Si faltan monedas: aviso, el jugador sigue y vuelve a la meta.
+
+## Reinicio con R
+
+- Conserva `restart()` / `KeyR` en `mario-platformer/js-v3/input.js`.
+- `R` debe llamar a `resetGame` en partida, victoria y game over.
+- “Volver al menú” puede existir; R no deja de reiniciar el nivel.
+
+```javascript
+// ✅ GOOD
+if (jumpEdge) {
+  if (player.grounded || player.coyoteTimer > 0) player.vy = JUMP_VELOCITY;
+  else if (player.airJumpsLeft > 0) { player.vy = AIR_JUMP_VELOCITY; player.airJumpsLeft -= 1; }
+}
+if (input.restart()) resetGame(game);
+
+// ❌ BAD — quitar segundo salto o R
+if (jumpEdge && player.grounded) player.vy = JUMP_VELOCITY;
+```

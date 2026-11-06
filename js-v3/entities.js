@@ -5,8 +5,6 @@ import {
   RUN_ACCEL,
   RUN_FRICTION,
   JUMP_VELOCITY,
-  AIR_JUMP_VELOCITY,
-  MAX_AIR_JUMPS,
   COYOTE_MS,
   FACING_VX_THRESHOLD,
   LEG_ANIM_VX,
@@ -24,7 +22,6 @@ export function createPlayer(spawn) {
     vy: 0,
     grounded: false,
     coyoteTimer: 0,
-    airJumpsLeft: MAX_AIR_JUMPS,
     facing: 1,
     jumpHeld: false,
     runAnim: false,
@@ -62,24 +59,10 @@ export function updatePlayer(player, input, dt, platforms, jumpEdge) {
   if (player.vx > FACING_VX_THRESHOLD) player.facing = 1;
   else if (player.vx < -FACING_VX_THRESHOLD) player.facing = -1;
 
-  if (jumpEdge) {
-    if (player.grounded || player.coyoteTimer > 0) {
-      player.vy = JUMP_VELOCITY;
-      player.grounded = false;
-      player.coyoteTimer = 0;
-      // #region agent log
-      player._jumpKind = 'ground';
-      player._apexY = player.y;
-      fetch('http://127.0.0.1:7936/ingest/fc791c09-8db6-4f2a-8df3-297725951093',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'2fd595'},body:JSON.stringify({sessionId:'2fd595',runId:'jump-tune',location:'entities.js:groundJump',message:'ground jump start',data:{x:player.x,y:player.y,vy:player.vy,jumpVel:JUMP_VELOCITY},timestamp:Date.now(),hypothesisId:'H4'})}).catch(()=>{});
-      // #endregion
-    } else if (player.airJumpsLeft > 0) {
-      player.vy = AIR_JUMP_VELOCITY;
-      player.airJumpsLeft -= 1;
-      // #region agent log
-      player._jumpKind = 'air';
-      fetch('http://127.0.0.1:7936/ingest/fc791c09-8db6-4f2a-8df3-297725951093',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'2fd595'},body:JSON.stringify({sessionId:'2fd595',runId:'jump-tune',location:'entities.js:airJump',message:'air jump start',data:{x:player.x,y:player.y,vy:player.vy},timestamp:Date.now(),hypothesisId:'H4'})}).catch(()=>{});
-      // #endregion
-    }
+  if (jumpEdge && (player.grounded || player.coyoteTimer > 0)) {
+    player.vy = JUMP_VELOCITY;
+    player.grounded = false;
+    player.coyoteTimer = 0;
   }
 
   player.vy += GRAVITY * dt;
@@ -87,16 +70,9 @@ export function updatePlayer(player, input, dt, platforms, jumpEdge) {
 
   const { grounded, hitCeiling } = resolvePlatforms(player, platforms, dt);
   player.grounded = grounded;
-  // #region agent log
-  if (!grounded && player.y < (player._apexY ?? 9999)) player._apexY = player.y;
-  if (hitCeiling) {
-    fetch('http://127.0.0.1:7936/ingest/fc791c09-8db6-4f2a-8df3-297725951093',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'2fd595'},body:JSON.stringify({sessionId:'2fd595',runId:'jump-tune',location:'entities.js:ceiling',message:'jump clipped by ceiling',data:{x:player.x,y:player.y,vy:player.vy},timestamp:Date.now(),hypothesisId:'H3'})}).catch(()=>{});
-  }
-  // #endregion
 
   if (grounded) {
     player.coyoteTimer = COYOTE_MS / 1000;
-    player.airJumpsLeft = MAX_AIR_JUMPS;
   } else {
     player.coyoteTimer = Math.max(0, player.coyoteTimer - dt);
   }

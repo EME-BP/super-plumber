@@ -4,7 +4,6 @@ import {
   STOMP_SCORE,
   INVULN_MS,
   RESPAWN_BLINK_MS,
-  MAX_AIR_JUMPS,
 } from "/js-v3/constants.js";
 import { createLevel } from "/js-v3/level.js";
 import {
@@ -132,7 +131,6 @@ function respawnPlayer(game) {
   game.player.vx = 0;
   game.player.vy = 0;
   game.player.grounded = false;
-  game.player.airJumpsLeft = MAX_AIR_JUMPS;
   snapPlayerToGround(game.player, game.level.platforms);
   game.invulnMs = INVULN_MS;
 }

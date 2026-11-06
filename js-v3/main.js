@@ -94,8 +94,16 @@ function goToMenu() {
   showMenu();
 }
 
-backToMenu.addEventListener("click", goToMenu);
-exitToMenu.addEventListener("click", goToMenu);
+backToMenu.addEventListener("click", (e) => {
+  e.preventDefault();
+  e.stopPropagation();
+  goToMenu();
+});
+exitToMenu.addEventListener("click", (e) => {
+  e.preventDefault();
+  e.stopPropagation();
+  goToMenu();
+});
 
 let lastTime = performance.now();
 const MAX_DT = 1 / 30;
